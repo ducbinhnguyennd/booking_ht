@@ -2,6 +2,7 @@ import 'package:booking_hotel/routers.dart';
 import 'package:booking_hotel/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   runApp(MyApp());
@@ -14,11 +15,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int backButtonCount = 0;
+    final textTheme = Theme.of(context).textTheme;
 
     return MaterialApp(
       title: 'MangaLand',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.exo2TextTheme(textTheme).copyWith(
+          bodyMedium: GoogleFonts.oswald(textStyle: textTheme.bodyMedium),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       routes: routes,
