@@ -1,3 +1,4 @@
+import 'package:booking_hotel/screens/datphong_screen.dart';
 import 'package:booking_hotel/screens/trangchu_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const TrangChuScreen(),
-    const TrangChuScreen(),
+    const DatPhongScreen(),
     const TrangChuScreen(),
     const TrangChuScreen(),
   ];
@@ -30,19 +31,19 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: _screens[_selectedIndex],
       bottomNavigationBar: Stack(
-        clipBehavior: Clip.none, // Cho phép icon nhô lên trên
+        clipBehavior: Clip.none,
         children: [
           BottomAppBar(
             shape: const CircularNotchedRectangle(),
             child: Container(
               height: 50,
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 5),
             ),
           ),
           Positioned(
             left: 0,
             right: 0,
-            bottom: 20,
+            bottom: 15,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -67,7 +68,7 @@ class _MainScreenState extends State<MainScreen> {
           AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             decoration: BoxDecoration(
-              color: isSelected ? Colors.blue : Colors.transparent,
+              color: isSelected ? const Color(0xff4461F2) : Colors.transparent,
               shape: BoxShape.circle,
               boxShadow: isSelected
                   ? [const BoxShadow(color: Colors.black26, blurRadius: 5)]
@@ -87,9 +88,10 @@ class _MainScreenState extends State<MainScreen> {
           ),
           if (isSelected)
             Padding(
-              padding: const EdgeInsets.only(top: 5),
+              padding: const EdgeInsets.only(top: 10),
               child: Text(label,
-                  style: const TextStyle(color: Colors.blue, fontSize: 12)),
+                  style:
+                      const TextStyle(color: Color(0xff4461F2), fontSize: 14)),
             ),
         ],
       ),
