@@ -1,4 +1,5 @@
 import 'package:booking_hotel/routers.dart';
+import 'package:booking_hotel/screens/discover_screen.dart';
 import 'package:booking_hotel/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
             }
             return false;
           },
-          child: const SplashScreen(),
+          child: const DiscoverScreen(namePlace: 'Hồ Chí Minh',),
         ),
       ),
     );
