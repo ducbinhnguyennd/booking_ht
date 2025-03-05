@@ -1,5 +1,6 @@
 import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/constant/colors_const.dart';
+import 'package:booking_hotel/screens/discover_screen.dart';
 import 'package:booking_hotel/widget/item_cardcity.dart';
 import 'package:flutter/material.dart';
 
@@ -56,77 +57,90 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
             padding: const EdgeInsets.all(16.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Stack(
-                children: [
-                  Image.asset(
-                    AssetsPathConst.maj_saigon_hotel,
-                    width: double.infinity,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.black.withOpacity(0.2),
-                          Colors.transparent
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DiscoverScreen(
+                              namePlace: 'Hồ Chí Minh',
+                            )),
+                  );
+                },
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      AssetsPathConst.maj_saigon_hotel,
+                      width: double.infinity,
+                      height: 200,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                  Positioned(
-                    top: 16,
-                    left: 16,
-                    child: Text(
-                      'Majestic SaiGon Hotel',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 4,
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 16,
-                    right: 16,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    Container(
+                      width: double.infinity,
+                      height: 100,
                       decoration: BoxDecoration(
-                        color: ColorConst.colorMain,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            AssetsPathConst.ico_star,
-                            height: 16,
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            '5.0',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          ),
-                        ],
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.black.withOpacity(0.2),
+                            Colors.transparent
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                      bottom: 16,
+                    Positioned(
+                      top: 16,
+                      left: 16,
+                      child: Text(
+                        'Majestic SaiGon Hotel',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 4,
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 16,
                       right: 16,
-                      child: Image.asset(
-                        AssetsPathConst.ico_send,
-                      )),
-                ],
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: ColorConst.colorMain,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              AssetsPathConst.ico_star,
+                              height: 16,
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              '5.0',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                        bottom: 16,
+                        right: 16,
+                        child: Image.asset(
+                          AssetsPathConst.ico_send,
+                        )),
+                  ],
+                ),
               ),
             ),
           ),

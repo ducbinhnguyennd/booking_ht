@@ -1,4 +1,6 @@
+import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/constant/colors_const.dart';
+import 'package:booking_hotel/widget/item_hotel.dart';
 import 'package:flutter/material.dart';
 
 class DatPhongScreen extends StatefulWidget {
@@ -27,14 +29,31 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
     filteredLocations = locations;
   }
 
+  String removeAccents(String input) {
+    var str = input.toLowerCase();
+    str = str.replaceAll(RegExp(r'[àáạảãâầấậẩẫăằắặẳẵ]'), 'a');
+    str = str.replaceAll(RegExp(r'[èéẹẻẽêềếệểễ]'), 'e');
+    str = str.replaceAll(RegExp(r'[ìíịỉĩ]'), 'i');
+    str = str.replaceAll(RegExp(r'[òóọỏõôồốộổỗơờớợởỡ]'), 'o');
+    str = str.replaceAll(RegExp(r'[ùúụủũưừứựửữ]'), 'u');
+    str = str.replaceAll(RegExp(r'[ỳýỵỷỹ]'), 'y');
+    str = str.replaceAll(RegExp(r'[đ]'), 'd');
+    return str;
+  }
+
   void filterSearchResults(String query) {
     setState(() {
-      filteredLocations = query.isEmpty
-          ? locations
-          : locations
-              .where((location) =>
-                  location.toLowerCase().contains(query.toLowerCase()))
-              .toList();
+      if (query.isEmpty) {
+        filteredLocations = locations;
+      } else {
+        String normalizedQuery =
+            removeAccents(query.toLowerCase()); // Chuẩn hóa query
+        filteredLocations = locations.where((location) {
+          String normalizedLocation =
+              removeAccents(location.toLowerCase()); // Chuẩn hóa location
+          return normalizedLocation.contains(normalizedQuery);
+        }).toList();
+      }
     });
   }
 
@@ -68,13 +87,13 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.tune, color: Colors.blue),
+                      icon: const Icon(Icons.tune, color: Colors.blue),
                       onPressed: () {},
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(categories.length, (index) {
@@ -112,24 +131,25 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
                   );
                 }),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
-                height: 200,
+                height: 600,
                 child: ListView.separated(
                   itemCount: filteredLocations.length,
                   separatorBuilder: (_, __) =>
                       Divider(color: Colors.grey.shade300),
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(
-                        filteredLocations[index],
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    );
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ItemHotel(
+                          nameHotel: filteredLocations[index],
+                          imageHotel: AssetsPathConst.hotel_2,
+                          priceHotel: 1000.02303,
+                          onPressed: () {},
+                        ));
                   },
                 ),
-              ),
+              )
             ],
           ),
         ),

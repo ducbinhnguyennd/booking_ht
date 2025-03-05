@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             }
             return false;
           },
-          child: const DiscoverScreen(namePlace: 'Hồ Chí Minh',),
+          child: const SplashScreen(),
         ),
       ),
     );
