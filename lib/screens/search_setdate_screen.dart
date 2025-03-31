@@ -13,11 +13,11 @@ class _SearchSetDateScreenState extends State<SearchSetDateScreen> {
     return Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.transparent,
-            title: Column(
+            title: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('Chọn ngày',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF000000))),

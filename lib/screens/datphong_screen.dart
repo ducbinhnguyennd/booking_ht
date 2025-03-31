@@ -62,12 +62,12 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Column(
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFFF7F9FC),
+                  color: const Color(0xFFF7F9FC),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: Colors.grey.shade300),
                 ),
@@ -82,7 +82,7 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
                           prefixIcon:
                               Icon(Icons.search, color: Colors.grey.shade400),
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 12),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12),
                         ),
                       ),
                     ),
@@ -108,7 +108,7 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
                       },
                       child: Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                            const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                         decoration: BoxDecoration(
                           color:
                               isSelected ? ColorConst.colorMain : Colors.white,

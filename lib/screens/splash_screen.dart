@@ -5,7 +5,7 @@ import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/constant/colors_const.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   static String routeName = '/splash_screen';
 
@@ -51,8 +51,8 @@ class _SplashScreenState extends State<SplashScreen> {
               AssetsPathConst.splashBackgroundNgonTinh,
               height: 200,
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'MangaLand',
               style: TextStyle(
                 fontWeight: FontWeight.bold,

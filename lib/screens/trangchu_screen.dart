@@ -112,7 +112,7 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                       right: 16,
                       child: Container(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: ColorConst.colorMain,
                           borderRadius: BorderRadius.circular(16),
@@ -123,8 +123,8 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                               AssetsPathConst.ico_star,
                               height: 16,
                             ),
-                            SizedBox(width: 4),
-                            Text(
+                            const SizedBox(width: 4),
+                            const Text(
                               '5.0',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 14),
@@ -145,7 +145,7 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
             ),
           ),
           Container(
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               color: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +161,7 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                       },
                       child: Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                            const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                         decoration: BoxDecoration(
                           color:
                               isSelected ? ColorConst.colorMain : Colors.white,
@@ -232,7 +232,7 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                     top: 16,
                     right: 16,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: ColorConst.colorMain,
                         borderRadius: BorderRadius.circular(16),
@@ -243,8 +243,8 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                             AssetsPathConst.ico_star,
                             height: 16,
                           ),
-                          SizedBox(width: 4),
-                          Text(
+                          const SizedBox(width: 4),
+                          const Text(
                             '5.0',
                             style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
@@ -252,7 +252,7 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                       ),
                     ),
                   ),
-                  Positioned(
+                  const Positioned(
                       bottom: 16,
                       left: 16,
                       child: Text(
@@ -264,12 +264,12 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 12),
             color: Colors.white,
-            child: Align(
+            child: const Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(left: 12.0),
+                padding: EdgeInsets.only(left: 12.0),
                 child: Text(
                   'Các địa điểm',
                   style: TextStyle(fontSize: 16),
