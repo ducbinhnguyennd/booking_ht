@@ -6,9 +6,15 @@ class AssetsPathConst {
   static const String ico_star = 'assets/icons/star.png';
   static const String ico_send = 'assets/icons/ico_send.png';
   static const String ico_avatar = 'assets/icons/avatar.png';
+  static const String ico_avatar2 = 'assets/icons/avatar2.png';
   static const String ico_back = 'assets/icons/ArrowLeft.png';
   static const String ico_tele = 'assets/icons/ico_tele.png';
   static const String ico_clock = 'assets/icons/ico_clock.png';
+  static const String ico_NoGPS = 'assets/icons/NoGPS.png';
+  static const String ico_doipass = 'assets/icons/ico_doipass.png';
+  static const String ico_dangxuat = 'assets/icons/ico_dangxuat.png';
+  static const String ico_dieukhoan = 'assets/icons/ico_dieukhoan.png';
+  static const String ico_the = 'assets/icons/ico_the.png';
 
   /////////images
   static const String hanoi = 'assets/images/hanoi.png';
