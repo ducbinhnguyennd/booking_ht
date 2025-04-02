@@ -15,6 +15,8 @@ class AssetsPathConst {
   static const String ico_dangxuat = 'assets/icons/ico_dangxuat.png';
   static const String ico_dieukhoan = 'assets/icons/ico_dieukhoan.png';
   static const String ico_the = 'assets/icons/ico_the.png';
+  static const String ico_camera = 'assets/icons/ico_camera.png';
+  static const String ico_save = 'assets/icons/ico_save.png';
 
   /////////images
   static const String hanoi = 'assets/images/hanoi.png';

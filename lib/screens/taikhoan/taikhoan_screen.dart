@@ -1,5 +1,10 @@
 import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/constant/colors_const.dart';
+import 'package:booking_hotel/screens/taikhoan/chinhsua_taikhoan.dart';
+import 'package:booking_hotel/screens/taikhoan/dieukhoan_screen.dart';
+import 'package:booking_hotel/screens/taikhoan/doipass_taikhoan.dart';
+import 'package:booking_hotel/widget/item_ticket.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class TaikhoanScreen extends StatefulWidget {
@@ -23,17 +28,7 @@ class _TaikhoanScreenState extends State<TaikhoanScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // IconButton(
-                  //   icon: const Icon(
-                  //     Icons.arrow_back,
-                  //     size: 30,
-                  //   ),
-                  //   onPressed: () {
-                  //     Navigator.pop(context);
-                  //   },
-                  // ),
-                  // const SizedBox(width: 8),
-                  const Text(
+                  Text(
                     'Thông tin người dùng ',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -54,7 +49,16 @@ class _TaikhoanScreenState extends State<TaikhoanScreen> {
           Text('Rimuru Tempest', style: TextStyle(fontSize: 20)),
           const SizedBox(height: 20),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              if (kDebugMode) {
+                print("Nút chỉnh sửa được nhấn");
+              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ChinhSuaTaiKhoan()),
+              );
+            },
             child: Container(
               height: 40,
               width: MediaQuery.of(context).size.width / 2,
@@ -82,43 +86,69 @@ class _TaikhoanScreenState extends State<TaikhoanScreen> {
               color: Colors.grey,
             ),
           ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Image.asset(AssetsPathConst.ico_doipass),
-              ),
-              Text(
-                'Đổi mật khẩu',
-                style: TextStyle(fontSize: 18),
-              )
-            ],
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DoipassTaikhoan()),
+              );
+            },
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Image.asset(AssetsPathConst.ico_doipass),
+                ),
+                Text(
+                  'Đổi mật khẩu',
+                  style: TextStyle(fontSize: 18),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 20),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Image.asset(AssetsPathConst.ico_the),
-              ),
-              Text(
-                'Thẻ của tôi ',
-                style: TextStyle(fontSize: 18),
-              )
-            ],
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TicketScreen()),
+              );
+            },
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Image.asset(AssetsPathConst.ico_the),
+                ),
+                Text(
+                  'Thẻ của tôi ',
+                  style: TextStyle(fontSize: 18),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 20),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Image.asset(AssetsPathConst.ico_dieukhoan),
-              ),
-              Text(
-                'Điều khoản  và chính sách',
-                style: TextStyle(fontSize: 18),
-              )
-            ],
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TermsAndPolicyScreen()),
+              );
+            },
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Image.asset(AssetsPathConst.ico_dieukhoan),
+                ),
+                Text(
+                  'Điều khoản  và chính sách',
+                  style: TextStyle(fontSize: 18),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 20),
           Row(
