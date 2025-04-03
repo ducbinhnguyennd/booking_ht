@@ -82,7 +82,8 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
                           prefixIcon:
                               Icon(Icons.search, color: Colors.grey.shade400),
                           border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 12),
                         ),
                       ),
                     ),
@@ -107,8 +108,8 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
                         });
                       },
                       child: Container(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
                         decoration: BoxDecoration(
                           color:
                               isSelected ? ColorConst.colorMain : Colors.white,
@@ -140,13 +141,13 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
                       Divider(color: Colors.grey.shade300),
                   itemBuilder: (context, index) {
                     return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: ItemHotel(
-                          nameHotel: filteredLocations[index],
-                          imageHotel: AssetsPathConst.hotel_2,
-                          priceHotel: 1000.02303,
-                          onPressed: () {},
-                        ));
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ItemHotel(
+                        nameHotel: filteredLocations[index],
+                        imageHotel: AssetsPathConst.hotel_2,
+                        priceHotel: 1000.02303,
+                      ),
+                    );
                   },
                 ),
               )
