@@ -12,8 +12,6 @@ class ChuyenDi_Screen extends StatefulWidget {
 class _ChuyenDi_ScreenState extends State<ChuyenDi_Screen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
-  // Danh sách giả lập các chuyến đi (chỉ có dữ liệu cho tab "Sắp tới")
   List<Trip> trips = [
     Trip(
       hotelName: "Fusion Original Saigon",
@@ -212,7 +210,7 @@ class _ChuyenDi_ScreenState extends State<ChuyenDi_Screen>
     );
   }
 
-  // Widget chứa hai nút "Muốn đến" và "Chỗ xác nhận"
+  // Widget "Muốn đến" và "Chỗ xác nhận"
   Widget _buildFilterButtons() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
