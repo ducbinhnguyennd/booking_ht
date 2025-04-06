@@ -1,5 +1,6 @@
 import 'package:booking_hotel/screens/chuyendi_screen.dart';
 import 'package:booking_hotel/screens/datphong_screen.dart';
+import 'package:booking_hotel/screens/taikhoan/taikhoan_screen.dart';
 import 'package:booking_hotel/screens/trangchu_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
     const TrangChuScreen(),
     const DatPhongScreen(),
     const ChuyenDi_Screen(),
-    const TrangChuScreen(),
+    const TaikhoanScreen(),
   ];
 
   void _onTabSelected(int index) {

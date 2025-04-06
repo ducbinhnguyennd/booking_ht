@@ -1,18 +1,19 @@
 import 'package:booking_hotel/constant/asset_path_const.dart';
+import 'package:booking_hotel/widget/item_chonphong.dart';
 import 'package:flutter/material.dart';
 
 class ItemHotel extends StatelessWidget {
   final String nameHotel;
   final String imageHotel;
   final double priceHotel;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const ItemHotel({
     super.key,
     required this.nameHotel,
     required this.imageHotel,
     required this.priceHotel,
-    required this.onPressed
+    this.onPressed,
   });
 
   @override
@@ -26,8 +27,12 @@ class ItemHotel extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: Image.asset(imageHotel,
-                height: 180, width: double.infinity, fit: BoxFit.cover),
+            child: Image.asset(
+              imageHotel,
+              height: 180,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(12.0),
@@ -37,9 +42,10 @@ class ItemHotel extends StatelessWidget {
                 Text(
                   nameHotel,
                   style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF111111)),
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF111111),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Row(
@@ -47,13 +53,18 @@ class ItemHotel extends StatelessWidget {
                     Image.asset(AssetsPathConst.ico_star,
                         width: 16, height: 16),
                     const SizedBox(width: 5),
-                    const Text('5.0',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF141416))),
+                    const Text(
+                      '5.0',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF141416),
+                      ),
+                    ),
                     const SizedBox(width: 10),
-                    const Text('(1420 lượt xem)',
-                        style: TextStyle(color: Color(0xFF777E90))),
+                    const Text(
+                      '(1420 lượt xem)',
+                      style: TextStyle(color: Color(0xFF777E90)),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -66,32 +77,50 @@ class ItemHotel extends StatelessWidget {
                           const TextSpan(
                             text: 'Từ ',
                             style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xFF111111)),
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xFF111111),
+                            ),
                           ),
                           TextSpan(
                             text: '${priceHotel.toStringAsFixed(0)} đ',
                             style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF111111)),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF111111),
+                            ),
                           ),
                         ],
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: onPressed,
+                      onPressed: () {
+                        // Điều hướng sang ItemChonPhong và truyền dữ liệu
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ItemChonPhong(
+                              nameHotel: nameHotel,
+                              imageHotel: imageHotel,
+                              priceHotel: priceHotel,
+                            ),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32)),
+                          borderRadius: BorderRadius.circular(32),
+                        ),
                         backgroundColor: const Color(0xFF4461F2),
                       ),
-                      child: const Text('Chọn phòng',
-                          style: TextStyle(
-                              color: Color(0xFFF4F5F6),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400)),
+                      child: const Text(
+                        'Chọn phòng',
+                        style: TextStyle(
+                          color: Color(0xFFF4F5F6),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
                   ],
                 ),

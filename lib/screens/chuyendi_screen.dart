@@ -1,5 +1,7 @@
 import 'package:booking_hotel/constant/asset_path_const.dart';
+import 'package:booking_hotel/constant/colors_const.dart';
 import 'package:booking_hotel/models/trip_model.dart';
+import 'package:booking_hotel/widget/item_card_chuyendi_saptoi.dart';
 import 'package:flutter/material.dart';
 
 class ChuyenDi_Screen extends StatefulWidget {
@@ -23,6 +25,18 @@ class _ChuyenDi_ScreenState extends State<ChuyenDi_Screen>
       hotelName: "New Hotel",
       roomType: "Standard Room",
       status: "upcoming",
+      isConfirmed: true, // Thuộc "Chỗ xác nhận"
+    ),
+    Trip(
+      hotelName: "New Hotel",
+      roomType: "Standard Room",
+      status: "completed",
+      isConfirmed: true, // Thuộc "Chỗ xác nhận"
+    ),
+    Trip(
+      hotelName: "New Hotel",
+      roomType: "Standard Room",
+      status: "canceled",
       isConfirmed: true, // Thuộc "Chỗ xác nhận"
     ),
   ];
@@ -51,74 +65,37 @@ class _ChuyenDi_ScreenState extends State<ChuyenDi_Screen>
     super.dispose();
   }
 
-  // Widget hiển thị khi không có chuyến đi
-  Widget _buildEmptyState() {
+  // Widget hiển thị khi tab chưa có dữ liệu
+  Widget _buildNoDataState() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.location_on_outlined,
-            size: 80,
-            color: Colors.blue,
-          ),
-          const SizedBox(height: 16),
-          const Text(
+          Image.asset(AssetsPathConst.ico_NoGPS, height: 150),
+          Text(
             "Chưa có chuyến đi nào",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              // Điều hướng đến màn hình đặt phòng
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            ),
-            child: const Text(
-              "Đặt phòng ngay!",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
-            ),
-          ),
+          )
         ],
       ),
     );
   }
 
-  // Widget hiển thị khi tab chưa có dữ liệu
-  Widget _buildNoDataState() {
-    return const Center(
-      child: Text(
-        "Chưa có dữ liệu",
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
-
   // Widget hiển thị danh sách chuyến đi cho tab "Sắp tới"
-  Widget _buildUpcomingTripList() {
+  Widget _buildUpcomingTripList(String status) {
     // Lọc danh sách chuyến đi: chỉ lấy các chuyến đi "upcoming" và phù hợp với trạng thái xác nhận
-    final filteredTrips = trips
-        .where((trip) =>
-            trip.status == "upcoming" &&
-            trip.isConfirmed == _showConfirmedTrips)
-        .toList();
+    final filteredTrips = trips.where((trip) {
+      if (status == "upcoming") {
+        return trip.status == status && trip.isConfirmed == _showConfirmedTrips;
+      }
+      return trip.status == status;
+    }).toList();
 
     if (filteredTrips.isEmpty) {
-      return _buildEmptyState();
+      return _buildNoDataState();
     }
 
     return ListView.builder(
@@ -126,86 +103,7 @@ class _ChuyenDi_ScreenState extends State<ChuyenDi_Screen>
       itemCount: filteredTrips.length,
       itemBuilder: (context, index) {
         final trip = filteredTrips[index];
-        return Card(
-          margin: const EdgeInsets.only(bottom: 16),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 80,
-                      height: 80,
-                      color: Colors.grey[300],
-                      child: const Center(child: Text("Hình ảnh")),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            trip.hotelName,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            trip.roomType,
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            width: MediaQuery.of(context).size.width,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              color: trip.isConfirmed
-                                  ? Colors.orange[100]
-                                  : Colors.blue[100],
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                    trip.isConfirmed
-                                        ? AssetsPathConst.ico_clock
-                                        : AssetsPathConst.ico_tele,
-                                    width: 20),
-                                const SizedBox(width: 8),
-                                Text(
-                                  trip.isConfirmed
-                                      ? "Chỗ xác nhận"
-                                      : "Muốn đến",
-                                  style: TextStyle(
-                                      color: trip.isConfirmed
-                                          ? Colors.orange[800]
-                                          : Colors.blue,
-                                      fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 1,
-                  color: Colors.grey,
-                ),
-              ],
-            ),
-          ),
-        );
+        return TripCardSapToi(trip: trip); // Truyền trực tiếp đối tượng trip
       },
     );
   }
@@ -338,9 +236,9 @@ class _ChuyenDi_ScreenState extends State<ChuyenDi_Screen>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  _buildUpcomingTripList(), // Tab "Sắp tới"
-                  _buildNoDataState(), // Tab "Đã hoàn thành"
-                  _buildNoDataState(), // Tab "Đã hủy"
+                  _buildUpcomingTripList("upcoming"), // Tab "Sắp tới"
+                  _buildUpcomingTripList("completed"), // Tab "Đã hoàn thành"
+                  _buildUpcomingTripList("canceled"), // Tab "Đã hủy"
                 ],
               ),
             ),
