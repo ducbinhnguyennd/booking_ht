@@ -17,12 +17,16 @@ class AssetsPathConst {
   static const String ico_the = 'assets/icons/ico_the.png';
   static const String ico_camera = 'assets/icons/ico_camera.png';
   static const String ico_save = 'assets/icons/ico_save.png';
+  static const String ico_location = 'assets/icons/ico_location.png';
 
   /////////images
   static const String hanoi = 'assets/images/hanoi.png';
   static const String danang = 'assets/images/danang.png';
   static const String hotel_2 = 'assets/images/hotel_2.png';
   static const String maj_saigon_hotel = 'assets/images/maj_saigon_hotel.png';
+  static const String chitiet1 = 'assets/images/chitiet1.png';
+  static const String chitiet2 = 'assets/images/chitiet2.png';
+  static const String chitiet3 = 'assets/images/chitiet3.png';
 
   static const String hcm = 'assets/images/hcm.png';
 
