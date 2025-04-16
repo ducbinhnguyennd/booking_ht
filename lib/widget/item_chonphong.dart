@@ -1,5 +1,6 @@
 import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/screens/bottombooking/PriceAndBookButton.dart';
+import 'package:booking_hotel/screens/khachsan/listRoom.dart';
 import 'package:booking_hotel/widget/item_cardcity.dart';
 import 'package:booking_hotel/widget/item_danhgia.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,8 @@ final List<Map<String, dynamic>> listdanhgia = [
   {
     "image": AssetsPathConst.chitiet1,
     "name": "Nguyễn Văn A",
-    "content": "Thỏa mãi, đúng là thỏi mãi. Trong đời ta lần đầu thấy khách điếm sang trong như thế này.",
+    "content":
+        "Thỏa mãi, đúng là thỏi mãi. Trong đời ta lần đầu thấy khách điếm sang trong như thế này.",
     "rating": 4.5,
   },
   {
@@ -220,7 +222,8 @@ class _ItemChonPhongState extends State<ItemChonPhong> {
                   GridView.builder(
                     padding: const EdgeInsets.all(0),
                     scrollDirection: Axis.vertical,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
                       mainAxisSpacing: 12,
                       childAspectRatio: 3,
@@ -238,7 +241,7 @@ class _ItemChonPhongState extends State<ItemChonPhong> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                   ),
-                  const SizedBox(height: 50), 
+                  const SizedBox(height: 50),
                 ],
               ),
             ),
@@ -248,9 +251,13 @@ class _ItemChonPhongState extends State<ItemChonPhong> {
       bottomNavigationBar: PriceAndBookButton(
         price: widget.priceHotel,
         onBookNow: () {
-          // Xử lý khi nhấn "Đặt ngay!"
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Đã đặt phòng thành công!")),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Listroom(
+                namehotel: widget.nameHotel,
+              ),
+            ),
           );
         },
       ),
