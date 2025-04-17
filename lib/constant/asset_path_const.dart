@@ -18,6 +18,18 @@ class AssetsPathConst {
   static const String ico_camera = 'assets/icons/ico_camera.png';
   static const String ico_save = 'assets/icons/ico_save.png';
   static const String ico_location = 'assets/icons/ico_location.png';
+  // detail room
+  static const String bed = 'assets/icons/Bed.png';
+  static const String bath = 'assets/icons/bath.png';
+  static const String colban = 'assets/icons/colban.png';
+  static const String nosmoking = 'assets/icons/nosmoking.png';
+  static const String people = 'assets/icons/people.png';
+  static const String telephone = 'assets/icons/telephone.png';
+  static const String tienich = 'assets/icons/tienich.png';
+  static const String toilet = 'assets/icons/toilet.png';
+  static const String wifi = 'assets/icons/wifi.png';
+  static const String tv = 'assets/icons/tv.png';
+  static const String window = 'assets/icons/window.png';
 
   /////////images
   static const String hanoi = 'assets/images/hanoi.png';
@@ -27,6 +39,8 @@ class AssetsPathConst {
   static const String chitiet1 = 'assets/images/chitiet1.png';
   static const String chitiet2 = 'assets/images/chitiet2.png';
   static const String chitiet3 = 'assets/images/chitiet3.png';
+  static const String room1 = 'assets/images/room1.png';
+  static const String dooropen = 'assets/images/door-open.png';
 
   static const String hcm = 'assets/images/hcm.png';
 

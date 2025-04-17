@@ -1,4 +1,5 @@
 import 'package:booking_hotel/constant/asset_path_const.dart';
+import 'package:booking_hotel/screens/khachsan/Room.dart';
 import 'package:booking_hotel/widget/item_chonphong.dart';
 import 'package:flutter/material.dart';
 
@@ -63,11 +64,7 @@ class ItemRoom extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ItemChonPhong(
-                                    nameHotel: nameHotel,
-                                    imageHotel: imageHotel,
-                                    priceHotel: priceHotel,
-                                  ),
+                                  builder: (context) => Room(),
                                 ),
                               );
                             },
