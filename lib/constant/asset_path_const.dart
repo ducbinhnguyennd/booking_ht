@@ -41,6 +41,7 @@ class AssetsPathConst {
   static const String chitiet3 = 'assets/images/chitiet3.png';
   static const String room1 = 'assets/images/room1.png';
   static const String dooropen = 'assets/images/door-open.png';
+  static const String mastercard = 'assets/images/mastercard.png';
 
   static const String hcm = 'assets/images/hcm.png';
 

@@ -1,5 +1,6 @@
 import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/constant/colors_const.dart';
+import 'package:booking_hotel/screens/payments/payment.dart';
 import 'package:flutter/material.dart';
 
 class Room extends StatefulWidget {
@@ -212,7 +213,14 @@ class _RoomState extends State<Room> {
                     }).toList(),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PaymentScreen(),
+                                ),
+                              );
+                    },
                     child: Align(
                       alignment: Alignment.center,
                       child: Container(
