@@ -1,5 +1,7 @@
 import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/constant/colors_const.dart';
+import 'package:booking_hotel/models/card_model.dart';
+import 'package:booking_hotel/screens/payments/listcard.dart';
 import 'package:flutter/material.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -10,6 +12,7 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
+  CardInfo? selectedCard = CardInfo(cardNumber: "**** **** **** 4679", cardType: "mastercard");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -219,19 +222,46 @@ class _PaymentScreenState extends State<PaymentScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.grey[200]
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(AssetsPathConst.mastercard, height: 30,),
-                    Text("**** **** **** ****4679"),
-                    Text("Thay đổi ", style: TextStyle(color: Colors.blue),),
-                  ],
-                ),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.grey[200],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    selectedCard?.cardType == "mastercard"
+                        ? AssetsPathConst.mastercard
+                        : AssetsPathConst.mastercard, // Giả sử có asset cho visa
+                    height: 30,
+                  ),
+                  Text(selectedCard?.cardNumber ?? "Chưa chọn thẻ"),
+                  GestureDetector(
+                    onTap: () async {
+                      // Chuyển sang màn hình quản lý thẻ và chờ kết quả
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CardManagementScreen(
+                            currentCard: selectedCard,
+                          ),
+                        ),
+                      );
+                      // Cập nhật thẻ được chọn nếu có kết quả trả về
+                      if (result != null && result is CardInfo) {
+                        setState(() {
+                          selectedCard = result;
+                        });
+                      }
+                    },
+                    child: const Text(
+                      "Thay đổi",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Padding(
