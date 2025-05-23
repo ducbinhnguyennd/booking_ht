@@ -1,5 +1,6 @@
 import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/constant/colors_const.dart';
+import 'package:booking_hotel/screens/account/login_screen.dart';
 import 'package:booking_hotel/screens/taikhoan/chinhsua_taikhoan.dart';
 import 'package:booking_hotel/screens/taikhoan/dieukhoan_screen.dart';
 import 'package:booking_hotel/screens/taikhoan/doipass_taikhoan.dart';
@@ -151,17 +152,25 @@ class _TaikhoanScreenState extends State<TaikhoanScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Image.asset(AssetsPathConst.ico_dangxuat),
-              ),
-              Text(
-                'Đăng xuất',
-                style: TextStyle(fontSize: 18),
-              )
-            ],
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              );
+            },
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Image.asset(AssetsPathConst.ico_dangxuat),
+                ),
+                Text(
+                  'Đăng xuất',
+                  style: TextStyle(fontSize: 18),
+                )
+              ],
+            ),
           )
         ]));
   }

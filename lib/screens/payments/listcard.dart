@@ -184,7 +184,7 @@ class _CardManagementScreenState extends State<CardManagementScreen> {
                     setState(() {
                       cards.add(newCard);
                     });
-                    // Navigator.pop(context, newCard);
+                    Navigator.pop(context, newCard);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Vui lòng nhập số thẻ")),
