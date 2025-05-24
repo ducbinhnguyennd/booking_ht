@@ -1,5 +1,5 @@
 import 'package:booking_hotel/apiservice/api_service.dart';
-import 'package:booking_hotel/models/auth_result.dart';
+import 'package:booking_hotel/screens/account/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -15,24 +15,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   bool isLoading = false;
+  final ApiService apiService = ApiService();
 
   void handleRegister() async {
-    setState(() => isLoading = true);
+    if (nameCtrl.text.isEmpty ||
+        emailCtrl.text.isEmpty ||
+        passCtrl.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Vui lòng điền đầy đủ thông tin')),
+      );
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
     try {
-      AuthResult result = await ApiService.register(
-        nameCtrl.text.trim(),
-        emailCtrl.text.trim(),
+      final response = await apiService.register(
+        nameCtrl.text,
+        emailCtrl.text,
         passCtrl.text,
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Đăng ký thành công: ${result.user.name}')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Đăng ký thành công! Vui lòng đăng nhập')),
+        );
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi đăng ký: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
-    setState(() => isLoading = false);
   }
 
   @override
@@ -43,19 +67,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(children: [
             TextField(
                 controller: nameCtrl,
-                decoration: const InputDecoration(labelText: 'Họ tên')),
+                decoration: const InputDecoration(
+                  labelText: 'Họ tên',
+                  border: OutlineInputBorder(),
+                )),
+            const SizedBox(height: 16),
             TextField(
                 controller: emailCtrl,
-                decoration: const InputDecoration(labelText: 'Email')),
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                )),
+            const SizedBox(height: 16),
             TextField(
                 controller: passCtrl,
                 obscureText: true,
-                decoration: const InputDecoration(labelText: 'Mật khẩu')),
+                decoration: const InputDecoration(
+                  labelText: 'Mật khẩu',
+                  border: OutlineInputBorder(),
+                )),
             const SizedBox(height: 20),
             isLoading
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
-                    onPressed: handleRegister, child: const Text('Đăng ký')),
+                    onPressed: handleRegister,
+                    child: const Text('Đăng ký'),
+                  ),
           ]),
         ),
       );

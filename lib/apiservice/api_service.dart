@@ -1,44 +1,76 @@
+import 'package:booking_hotel/models/user_model.dart';
 import 'package:dio/dio.dart';
-import '../models/user_model.dart';
-import '../models/auth_result.dart';
 
 class ApiService {
-  static final Dio _dio =
-      Dio(BaseOptions(baseUrl: 'http://10.0.2.2:5000/api/auth'));
+  final Dio _dio = Dio(
+    BaseOptions(
+      baseUrl: 'http://10.0.2.2:5000/api/auth',
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 3),
+    ),
+  );
 
-  static Future<AuthResult> register(
-      String name, String email, String password) async {
-    final response = await _dio.post(
-      '/register',
-      data: FormData.fromMap({
-        'name': name,
-        'email': email,
-        'password': password,
-      }),
-      options: Options(contentType: 'multipart/form-data'),
-    );
-
-    final data = response.data;
-    return AuthResult(
-      token: data['token'],
-      user: UserModel.fromJson(data['user']),
-    );
+  Future<LoginResponse> login(String email, String password) async {
+    try {
+      final response = await _dio.post(
+        '/login',
+        data: {
+          'email': email,
+          'password': password,
+        },
+      );
+      return LoginResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
   }
 
-  static Future<AuthResult> login(String email, String password) async {
-    final response = await _dio.post(
-      '/login',
-      data: FormData.fromMap({
-        'email': email,
-        'password': password,
-      }),
-      options: Options(contentType: 'multipart/form-data'),
-    );
+  Future<LoginResponse> register(
+      String name, String email, String password) async {
+    try {
+      final response = await _dio.post(
+        '/register',
+        data: {
+          'name': name,
+          'email': email,
+          'password': password,
+        },
+      );
+      return LoginResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
 
-    final data = response.data;
-    return AuthResult(
-      token: data['token'],
-      user: UserModel.fromJson(data['user']),
-    );
+  Future<User> getUserProfile(String token) async {
+    try {
+      final response = await _dio.get(
+        '/me',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      return User.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<User> getUserById(String token, String userId) async {
+    try {
+      final response = await _dio.get(
+        '/users/$userId',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      return User.fromJson(response.data);
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  String _handleError(DioException e) {
+    if (e.response != null) {
+      return e.response!.data['msg'] ?? 'Đã có lỗi xảy ra';
+    } else {
+      return 'Không thể kết nối đến server';
+    }
   }
 }

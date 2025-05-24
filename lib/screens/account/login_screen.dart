@@ -1,8 +1,10 @@
-import 'package:booking_hotel/apiservice/api_service.dart';
-import 'package:booking_hotel/models/auth_result.dart';
-import 'package:booking_hotel/screens/main_screen.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:booking_hotel/apiservice/api_service.dart';
+import 'package:booking_hotel/screens/main_screen.dart';
+import 'package:booking_hotel/user_Service.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,27 +19,58 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   bool isLoading = false;
+  final ApiService apiService = ApiService();
 
   void handleLogin() async {
-    setState(() => isLoading = true);
-    try {
-      AuthResult result = await ApiService.login(
-        emailCtrl.text.trim(),
-        passCtrl.text,
-      );
+    if (emailCtrl.text.isEmpty || passCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Đăng nhập thành công: ${result.user.name}')),
+        const SnackBar(content: Text('Vui lòng điền đầy đủ thông tin')),
       );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const MainScreen()),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi đăng nhập: $e')),
-      );
+      return;
     }
-    setState(() => isLoading = false);
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final response = await apiService.login(emailCtrl.text, passCtrl.text);
+      if (mounted) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', response.token); // Lưu token riêng
+        UserServices us = UserServices();
+        await us.saveinfologin(jsonEncode({
+          'token': response.token,
+          'user': {
+            'id': response.user.id,
+            'name': response.user.name,
+            'email': response.user.email,
+          }
+        }));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Đăng nhập thành công!')),
+        );
+
+        Navigator.pushReplacement<void, void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => const MainScreen(),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 
   @override
