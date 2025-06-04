@@ -1,17 +1,19 @@
+import 'dart:convert';
+
 import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/widget/item_chonphong.dart';
 import 'package:flutter/material.dart';
 
 class ItemHotel extends StatelessWidget {
   final String nameHotel;
-  final String imageHotel;
+  final List<String> imagesHotel;
   final double priceHotel;
   final VoidCallback? onPressed;
 
   const ItemHotel({
     super.key,
     required this.nameHotel,
-    required this.imageHotel,
+    required this.imagesHotel,
     required this.priceHotel,
     this.onPressed,
   });
@@ -27,8 +29,8 @@ class ItemHotel extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: Image.asset(
-              imageHotel,
+            child: Image.memory(
+              base64Decode(imagesHotel[0].split(',')[1]),
               height: 180,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -95,13 +97,12 @@ class ItemHotel extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Điều hướng sang ItemChonPhong và truyền dữ liệu
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ItemChonPhong(
                               nameHotel: nameHotel,
-                              imageHotel: imageHotel,
+                              imagesHotel: imagesHotel,
                               priceHotel: priceHotel,
                             ),
                           ),

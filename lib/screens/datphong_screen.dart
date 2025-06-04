@@ -1,5 +1,7 @@
+import 'package:booking_hotel/apiservice/api_service.dart';
 import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/constant/colors_const.dart';
+import 'package:booking_hotel/models/hotel_model.dart';
 import 'package:booking_hotel/widget/item_hotel.dart';
 import 'package:flutter/material.dart';
 
@@ -12,21 +14,16 @@ class DatPhongScreen extends StatefulWidget {
 
 class _DatPhongScreenState extends State<DatPhongScreen> {
   int selectedIndex = 0;
-
-  final List<String> categories = ["Tất cả", "Phổ biến", "Xu hướng"];
-  List<String> locations = [
-    "Hà Nội",
-    "Hồ Chí Minh",
-    "Đà Nẵng",
-    "Vũng Tàu",
-    "Nha Trang",
-  ];
-  List<String> filteredLocations = [];
+  final List<String> categories = ["all", "popular", "trending"];
+  List<Hotel> hotels = [];
+  List<Hotel> filteredHotels = [];
+  final ApiService _apiService = ApiService();
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    filteredLocations = locations;
+    _fetchHotels(categories[selectedIndex].toLowerCase());
   }
 
   String removeAccents(String input) {
@@ -44,17 +41,39 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
   void filterSearchResults(String query) {
     setState(() {
       if (query.isEmpty) {
-        filteredLocations = locations;
+        filteredHotels = hotels;
       } else {
-        String normalizedQuery =
-            removeAccents(query.toLowerCase()); // Chuẩn hóa query
-        filteredLocations = locations.where((location) {
-          String normalizedLocation =
-              removeAccents(location.toLowerCase()); // Chuẩn hóa location
-          return normalizedLocation.contains(normalizedQuery);
+        String normalizedQuery = removeAccents(query.toLowerCase());
+        filteredHotels = hotels.where((hotel) {
+          String normalizedName =
+              removeAccents(hotel.tenKhachSan.toLowerCase());
+          String normalizedAddress = removeAccents(hotel.diaChi.toLowerCase());
+          return normalizedName.contains(normalizedQuery) ||
+              normalizedAddress.contains(normalizedQuery);
         }).toList();
       }
     });
+  }
+
+  void _fetchHotels(String filter) async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final fetchedHotels = await _apiService.fetchHotels(filter);
+      setState(() {
+        hotels = fetchedHotels;
+        filteredHotels = fetchedHotels;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi khi tải dữ liệu: $e')),
+      );
+    }
   }
 
   @override
@@ -106,6 +125,7 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
                         setState(() {
                           selectedIndex = index;
                         });
+                        _fetchHotels(categories[index]);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -135,22 +155,27 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
               const SizedBox(height: 16),
               SizedBox(
                 height: 600,
-                child: ListView.separated(
-                  itemCount: filteredLocations.length,
-                  separatorBuilder: (_, __) =>
-                      Divider(color: Colors.grey.shade300),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: ItemHotel(
-                        nameHotel: filteredLocations[index],
-                        imageHotel: AssetsPathConst.hotel_2,
-                        priceHotel: 1000.02303,
+                child: isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.separated(
+                        itemCount: filteredHotels.length,
+                        separatorBuilder: (_, __) =>
+                            Divider(color: Colors.grey.shade300),
+                        itemBuilder: (context, index) {
+                          final hotel = filteredHotels[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: ItemHotel(
+                              nameHotel: hotel.tenKhachSan,
+                              imagesHotel: hotel.anhKhachSan,
+                              priceHotel: hotel.danhSachPhong.isNotEmpty
+                                  ? hotel.danhSachPhong[0].giaTien
+                                  : 0.0,
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              )
+              ),
             ],
           ),
         ),

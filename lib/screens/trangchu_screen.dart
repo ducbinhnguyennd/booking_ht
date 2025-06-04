@@ -111,8 +111,8 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                       top: 16,
                       right: 16,
                       child: Container(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: ColorConst.colorMain,
                           borderRadius: BorderRadius.circular(16),
@@ -160,8 +160,8 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                         });
                       },
                       child: Container(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
                         decoration: BoxDecoration(
                           color:
                               isSelected ? ColorConst.colorMain : Colors.white,
@@ -232,7 +232,8 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                     top: 16,
                     right: 16,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: ColorConst.colorMain,
                         borderRadius: BorderRadius.circular(16),

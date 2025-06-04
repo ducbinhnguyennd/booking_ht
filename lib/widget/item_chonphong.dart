@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/screens/bottombooking/PriceAndBookButton.dart';
 import 'package:booking_hotel/screens/khachsan/listRoom.dart';
@@ -7,25 +9,19 @@ import 'package:flutter/material.dart';
 
 class ItemChonPhong extends StatefulWidget {
   final String nameHotel;
-  final String imageHotel;
+  final List<String> imagesHotel;
   final double priceHotel;
 
   const ItemChonPhong({
     super.key,
     required this.nameHotel,
-    required this.imageHotel,
+    required this.imagesHotel,
     required this.priceHotel,
   });
 
   @override
   State<ItemChonPhong> createState() => _ItemChonPhongState();
 }
-
-List<Map<String, String>> chitietanh = [
-  {"image": AssetsPathConst.chitiet1},
-  {"image": AssetsPathConst.chitiet2},
-  {"image": AssetsPathConst.chitiet3},
-];
 
 final List<Map<String, String>> amenities = [
   {'name': 'Thích hợp cho\ncác hoạt động', 'image': 'chitiet_1.png'},
@@ -80,8 +76,8 @@ class _ItemChonPhongState extends State<ItemChonPhong> {
                 SizedBox(
                   width: double.infinity,
                   height: 200,
-                  child: Image.asset(
-                    widget.imageHotel,
+                  child: Image.memory(
+                    base64Decode(widget.imagesHotel[0].split(',')[1]),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -151,12 +147,13 @@ class _ItemChonPhongState extends State<ItemChonPhong> {
                               mainAxisSpacing: 12,
                               childAspectRatio: 1,
                             ),
-                            itemCount: chitietanh.length,
+                            itemCount: widget.imagesHotel
+                                .length, // Dùng danh sách ảnh từ API
                             itemBuilder: (context, index) {
                               return CategoryCard(
                                 title: "",
                                 subtitle: "",
-                                imagecity: chitietanh[index]["image"]!,
+                                imagecity: widget.imagesHotel[index],
                               );
                             },
                           ),

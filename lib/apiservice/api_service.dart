@@ -1,10 +1,11 @@
+import 'package:booking_hotel/models/hotel_model.dart';
 import 'package:booking_hotel/models/user_model.dart';
 import 'package:dio/dio.dart';
 
 class ApiService {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'http://10.0.2.2:5000/api/auth',
+      baseUrl: 'http://10.0.2.2:5000/api/',
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 3),
     ),
@@ -13,7 +14,7 @@ class ApiService {
   Future<LoginResponse> login(String email, String password) async {
     try {
       final response = await _dio.post(
-        '/login',
+        'auth/login',
         data: {
           'email': email,
           'password': password,
@@ -29,7 +30,7 @@ class ApiService {
       String name, String email, String password) async {
     try {
       final response = await _dio.post(
-        '/register',
+        'auth/register',
         data: {
           'name': name,
           'email': email,
@@ -45,7 +46,7 @@ class ApiService {
   Future<User> getUserProfile(String token) async {
     try {
       final response = await _dio.get(
-        '/me',
+        'auth/me',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
       return User.fromJson(response.data);
@@ -57,7 +58,7 @@ class ApiService {
   Future<User> getUserById(String token, String userId) async {
     try {
       final response = await _dio.get(
-        '/users/$userId',
+        'auth/users/$userId',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
       return User.fromJson(response.data);
@@ -71,6 +72,20 @@ class ApiService {
       return e.response!.data['msg'] ?? 'Đã có lỗi xảy ra';
     } else {
       return 'Không thể kết nối đến server';
+    }
+  }
+
+  Future<List<Hotel>> fetchHotels(String filter) async {
+    try {
+      final response = await _dio.get('/hotel?filter=$filter');
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        return data.map((json) => Hotel.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load hotels');
+      }
+    } catch (e) {
+      throw Exception('Error fetching hotels: $e');
     }
   }
 }

@@ -12,13 +12,18 @@ class DiscoverScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(namePlace, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF000000))),
-            const Text('Khám phá', style: TextStyle(fontSize: 16, color: Color(0xFF000000)))
+              Text(namePlace,
+                  style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF000000))),
+              const Text('Khám phá',
+                  style: TextStyle(fontSize: 16, color: Color(0xFF000000)))
             ],
           )),
       body: Padding(
@@ -27,12 +32,13 @@ class DiscoverScreen extends StatelessWidget {
             itemCount: 10,
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
-              return ItemHotel(
-                nameHotel: 'Khách sạn ${index + 1}',
-                imageHotel: AssetsPathConst.hanoi,
-                priceHotel: 1000000,
-                onPressed: () {},
-              );
+              // return ItemHotel(
+              //   nameHotel: 'Khách sạn ${index + 1}',
+              //   imagesHotel: AssetsPathConst.hanoi,
+              //   priceHotel: 1000000,
+              //   onPressed: () {},
+              // );
+              return Container();
             }),
       ),
     );
