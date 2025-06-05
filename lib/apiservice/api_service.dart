@@ -1,13 +1,13 @@
 import 'package:booking_hotel/models/hotel_model.dart';
+import 'package:booking_hotel/models/trip_model.dart';
 import 'package:booking_hotel/models/user_model.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: 'http://10.0.2.2:5000/api/',
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 3),
     ),
   );
 
@@ -86,6 +86,44 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Error fetching hotels: $e');
+    }
+  }
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  Future<List<Trip>> getTrips(String status) async {
+    try {
+      final token = await getToken();
+      if (token == null) {
+        throw Exception('No token found');
+      }
+      print(token);
+      final response = await _dio.get(
+        'booking/bookings?trangThai=$status',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      List data = response.data;
+      return data.map((json) => Trip.fromJson(json)).toList();
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<void> cancelTrip(String tripId) async {
+    try {
+      final token = await getToken();
+      if (token == null) {
+        throw Exception('No token found');
+      }
+      await _dio.put(
+        'booking/bookings/$tripId/cancel',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+    } on DioException catch (e) {
+      throw _handleError(e);
     }
   }
 }

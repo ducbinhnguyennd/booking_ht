@@ -1,7 +1,10 @@
+import 'package:booking_hotel/apiservice/api_service.dart';
 import 'package:booking_hotel/constant/asset_path_const.dart';
 import 'package:booking_hotel/constant/colors_const.dart';
+import 'package:booking_hotel/models/hotel_model.dart';
 import 'package:booking_hotel/screens/discover_screen.dart';
 import 'package:booking_hotel/widget/item_cardcity.dart';
+import 'package:booking_hotel/widget/item_hotel.dart'; // Thêm widget ItemHotel
 import 'package:flutter/material.dart';
 
 class TrangChuScreen extends StatefulWidget {
@@ -11,28 +14,42 @@ class TrangChuScreen extends StatefulWidget {
   State<TrangChuScreen> createState() => _TrangChuScreenState();
 }
 
-class _TrangChuScreenState extends State<TrangChuScreen> {
+class _TrangChuScreenState extends State<TrangChuScreen>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   int selectedIndex = 0;
+  final List<String> categories = ["all", "popular", "trending"];
+  List<Hotel> hotels = [];
+  List<Hotel> filteredHotels = [];
+  final ApiService _apiService = ApiService();
+  bool isLoading = false;
 
-  final List<String> categories = ["Tất cả", "Phổ biến", "Xu hướng"];
-  List<Map<String, String>> locations = [
-    {
-      "title": "Hồ Chí Minh",
-      "image": AssetsPathConst.hcm,
-    },
-    {
-      "title": "Hà Nội",
-      "image": AssetsPathConst.hanoi,
-    },
-    {
-      "title": "Đà Nẵng",
-      "image": AssetsPathConst.danang,
-    },
-    {
-      "title": "Vũng Tàu",
-      "image": AssetsPathConst.vungtau,
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _fetchHotels(categories[selectedIndex].toLowerCase());
+  }
+
+  void _fetchHotels(String filter) async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final fetchedHotels = await _apiService.fetchHotels(filter);
+      setState(() {
+        hotels = fetchedHotels;
+        filteredHotels = fetchedHotels;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi khi tải dữ liệu: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -62,9 +79,10 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const DiscoverScreen(
-                              namePlace: 'Hồ Chí Minh',
-                            )),
+                      builder: (context) => const DiscoverScreen(
+                        namePlace: 'Hồ Chí Minh',
+                      ),
+                    ),
                   );
                 },
                 child: Stack(
@@ -82,7 +100,7 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                         gradient: LinearGradient(
                           colors: [
                             Colors.black.withOpacity(0.2),
-                            Colors.transparent
+                            Colors.transparent,
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -134,56 +152,57 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                       ),
                     ),
                     Positioned(
-                        bottom: 16,
-                        right: 16,
-                        child: Image.asset(
-                          AssetsPathConst.ico_send,
-                        )),
+                      bottom: 16,
+                      right: 16,
+                      child: Image.asset(
+                        AssetsPathConst.ico_send,
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           ),
           Container(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              color: Colors.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(categories.length, (index) {
-                  bool isSelected = selectedIndex == index;
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = index;
-                        });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 20),
-                        decoration: BoxDecoration(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(categories.length, (index) {
+                bool isSelected = selectedIndex == index;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                      _fetchHotels(categories[index].toLowerCase());
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: isSelected ? ColorConst.colorMain : Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        border:
+                            Border.all(color: ColorConst.colorMain, width: 2),
+                      ),
+                      child: Text(
+                        categories[index],
+                        style: TextStyle(
                           color:
-                              isSelected ? ColorConst.colorMain : Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                          border:
-                              Border.all(color: ColorConst.colorMain, width: 2),
-                        ),
-                        child: Text(
-                          categories[index],
-                          style: TextStyle(
-                            color: isSelected
-                                ? Colors.white
-                                : ColorConst.colorMain,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              isSelected ? Colors.white : ColorConst.colorMain,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  );
-                }),
-              )),
+                  ),
+                );
+              }),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ClipRRect(
@@ -203,7 +222,7 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                       gradient: LinearGradient(
                         colors: [
                           Colors.black.withOpacity(0.2),
-                          Colors.transparent
+                          Colors.transparent,
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -254,12 +273,13 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
                     ),
                   ),
                   const Positioned(
-                      bottom: 16,
-                      left: 16,
-                      child: Text(
-                        'Luxury Room with Balcony',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      )),
+                    bottom: 16,
+                    left: 16,
+                    child: Text(
+                      'Luxury Room with Balcony',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -279,28 +299,45 @@ class _TrangChuScreenState extends State<TrangChuScreen> {
             ),
           ),
           Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                height: 150,
-                child: GridView.builder(
-                  scrollDirection: Axis.horizontal,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 1,
-                  ),
-                  itemCount: locations.length,
-                  itemBuilder: (context, index) {
-                    return CategoryCard(
-                      title: locations[index]["title"]!,
-                      subtitle: "Khám phá",
-                      imagecity: locations[index]["image"]!,
-                    );
-                  },
+            padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              height: 150,
+              child: GridView.builder(
+                scrollDirection: Axis.horizontal,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 1,
                 ),
-              ))
+                itemCount: filteredHotels.length,
+                itemBuilder: (context, index) {
+                  final hotel = filteredHotels[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DiscoverScreen(
+                            namePlace: hotel.tenKhachSan,
+                          ),
+                        ),
+                      );
+                    },
+                    child: CategoryCard(
+                      title: hotel.tenKhachSan,
+                      subtitle: "Khám phá",
+                      imagecity: hotel.anhKhachSan[index],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

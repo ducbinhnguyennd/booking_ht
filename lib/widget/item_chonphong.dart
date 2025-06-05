@@ -147,8 +147,7 @@ class _ItemChonPhongState extends State<ItemChonPhong> {
                               mainAxisSpacing: 12,
                               childAspectRatio: 1,
                             ),
-                            itemCount: widget.imagesHotel
-                                .length, // Dùng danh sách ảnh từ API
+                            itemCount: widget.imagesHotel.length,
                             itemBuilder: (context, index) {
                               return CategoryCard(
                                 title: "",

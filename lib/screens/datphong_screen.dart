@@ -12,7 +12,8 @@ class DatPhongScreen extends StatefulWidget {
   State<DatPhongScreen> createState() => _DatPhongScreenState();
 }
 
-class _DatPhongScreenState extends State<DatPhongScreen> {
+class _DatPhongScreenState extends State<DatPhongScreen>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   int selectedIndex = 0;
   final List<String> categories = ["all", "popular", "trending"];
   List<Hotel> hotels = [];
@@ -70,9 +71,6 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi khi tải dữ liệu: $e')),
-      );
     }
   }
 
@@ -182,4 +180,7 @@ class _DatPhongScreenState extends State<DatPhongScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
