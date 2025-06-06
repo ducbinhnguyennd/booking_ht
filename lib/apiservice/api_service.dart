@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:booking_hotel/models/hotel_model.dart';
 import 'package:booking_hotel/models/trip_model.dart';
 import 'package:booking_hotel/models/user_model.dart';
@@ -7,7 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiService {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'http://10.0.2.2:5000/api/',
+      baseUrl: Platform.isAndroid
+    ? 'http://10.0.2.2:5000/api/'
+    : 'http://192.168.110.70:5000/api/',
     ),
   );
 
