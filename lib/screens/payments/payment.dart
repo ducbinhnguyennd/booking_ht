@@ -12,7 +12,11 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  CardInfo? selectedCard = CardInfo(cardNumber: "**** **** **** 4679", cardType: "mastercard");
+  CardInfo? selectedCard = CardInfo(
+      cardNumber: "**** **** **** 4679",
+      cardType: "mastercard",
+      cardDateEnd: '',
+      Cvv: '');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,44 +120,54 @@ class _PaymentScreenState extends State<PaymentScreen> {
             child: Container(
               padding: EdgeInsets.all(10),
               height: 100,
-              
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.grey[200]
-              ),
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.grey[200]),
               child: const Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Ngày nhận phòng", style: TextStyle(
-                        fontSize: 17, color: Color(0xff515151)
-                      ),),
-                      Text("03/08/2023",style: TextStyle(
-                        fontSize: 17, color: Color(0xff000000)
-                      ),),
+                      Text(
+                        "Ngày nhận phòng",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff515151)),
+                      ),
+                      Text(
+                        "03/08/2023",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff000000)),
+                      ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Ngày trả phòng", style: TextStyle(
-                        fontSize: 17, color: Color(0xff515151)
-                      ),),
-                      Text("05/08/2023",style: TextStyle(
-                        fontSize: 17, color: Color(0xff000000)
-                      ),),
+                      Text(
+                        "Ngày trả phòng",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff515151)),
+                      ),
+                      Text(
+                        "05/08/2023",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff000000)),
+                      ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Số khách", style: TextStyle(
-                        fontSize: 17, color: Color(0xff515151)
-                      ),),
-                      Text("2",style: TextStyle(
-                        fontSize: 17, color: Color(0xff000000)
-                      ),),
+                      Text(
+                        "Số khách",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff515151)),
+                      ),
+                      Text(
+                        "2",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff000000)),
+                      ),
                     ],
                   )
                 ],
@@ -165,33 +179,39 @@ class _PaymentScreenState extends State<PaymentScreen> {
             child: Container(
               padding: EdgeInsets.all(10),
               height: 130,
-              
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.grey[200]
-              ),
-              child:  Column(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.grey[200]),
+              child: Column(
                 children: [
-                 const Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("2 đêm", style: TextStyle(
-                        fontSize: 17, color: Color(0xff515151)
-                      ),),
-                      Text("5,619,948 ₫",style: TextStyle(
-                        fontSize: 17, color: Color(0xff000000)
-                      ),),
+                      Text(
+                        "2 đêm",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff515151)),
+                      ),
+                      Text(
+                        "5,619,948 ₫",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff000000)),
+                      ),
                     ],
                   ),
-                 const Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Thuế và Phí (10%)", style: TextStyle(
-                        fontSize: 17, color: Color(0xff515151)
-                      ),),
-                      Text("561, 994 ₫ ",style: TextStyle(
-                        fontSize: 17, color: Color(0xff000000)
-                      ),),
+                      Text(
+                        "Thuế và Phí (10%)",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff515151)),
+                      ),
+                      Text(
+                        "561, 994 ₫ ",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff000000)),
+                      ),
                     ],
                   ),
                   Padding(
@@ -203,21 +223,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       height: 1,
                     ),
                   ),
-                 const Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Tổng cộng", style: TextStyle(
-                        fontSize: 17, color: Color(0xff515151)
-                      ),),
-                      Text("6,181,942 ₫",style: TextStyle(
-                        fontSize: 17, color: Color(0xff000000)
-                      ),),
+                      Text(
+                        "Tổng cộng",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff515151)),
+                      ),
+                      Text(
+                        "6,181,942 ₫",
+                        style:
+                            TextStyle(fontSize: 17, color: Color(0xff000000)),
+                      ),
                     ],
                   )
                 ],
               ),
             ),
-            
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -233,13 +256,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   Image.asset(
                     selectedCard?.cardType == "mastercard"
                         ? AssetsPathConst.mastercard
-                        : AssetsPathConst.mastercard, // Giả sử có asset cho visa
+                        : AssetsPathConst.Visa,
                     height: 30,
                   ),
                   Text(selectedCard?.cardNumber ?? "Chưa chọn thẻ"),
                   GestureDetector(
                     onTap: () async {
-                      // Chuyển sang màn hình quản lý thẻ và chờ kết quả
                       final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -267,31 +289,31 @@ class _PaymentScreenState extends State<PaymentScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PaymentScreen(),
-                                  ),
-                                );
-                      },
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          width: MediaQuery.of(context).size.width / 1.5,
-                          decoration: BoxDecoration(
-                            color: ColorConst.colorMain,
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          child: const Text(
-                            'Thanh toán',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                        ),
-                      ),
-                    ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PaymentScreen(),
+                  ),
+                );
+              },
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  width: MediaQuery.of(context).size.width / 1.5,
+                  decoration: BoxDecoration(
+                    color: ColorConst.colorMain,
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: const Text(
+                    'Thanh toán',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ),
+              ),
+            ),
           )
         ],
       ),

@@ -12,13 +12,14 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
     const TrangChuScreen(),
     const DatPhongScreen(),
-    const ChuyenDi_Screen(),
+    const ChuyenDiScreen(),
     const TaikhoanScreen(),
   ];
 
@@ -99,4 +100,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -14,7 +16,7 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(  
+    return Container(
       width: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -29,8 +31,8 @@ class CategoryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         child: Stack(
           children: [
-            Image.asset(
-              imagecity,
+            Image.memory(
+              base64Decode(imagecity.split(',')[1]),
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,
