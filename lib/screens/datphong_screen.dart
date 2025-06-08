@@ -164,6 +164,7 @@ class _DatPhongScreenState extends State<DatPhongScreen>
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: ItemHotel(
+                              khachsanId: hotel.id,
                               nameHotel: hotel.tenKhachSan,
                               imagesHotel: hotel.anhKhachSan,
                               priceHotel: hotel.danhSachPhong.isNotEmpty

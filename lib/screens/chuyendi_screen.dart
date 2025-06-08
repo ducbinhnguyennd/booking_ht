@@ -15,25 +15,123 @@ class _ChuyenDiScreenState extends State<ChuyenDiScreen>
   late TabController _tabController;
   List<Trip> choXacNhan = [];
   List<Trip> huy = [];
+  bool isLoadingChoXacNhan = true;
+  bool isLoadingHuy = false;
+  bool hasLoadedChoXacNhan = false;
+  bool hasLoadedHuy = false;
   final ApiService apiService = ApiService();
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    fetchTrips();
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) return; // Tránh gọi nhiều lần
+      _fetchDataForTab(_tabController.index);
+    });
+    _fetchDataForTab(0);
   }
 
-  Future<void> fetchTrips() async {
+  Future<void> _fetchDataForTab(int tabIndex) async {
+    if (tabIndex == 0 && !hasLoadedChoXacNhan) {
+      try {
+        setState(() {
+          isLoadingChoXacNhan = true;
+        });
+        choXacNhan = await apiService.getTrips('chờ xác nhận');
+        print('Dữ liệu chờ xác nhận: $choXacNhan');
+        hasLoadedChoXacNhan = true;
+      } catch (e) {
+        print('Lỗi khi tải chuyến đi chờ xác nhận: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Lỗi khi tải chuyến đi: $e')),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            isLoadingChoXacNhan = false;
+          });
+        }
+      }
+    } else if (tabIndex == 1 && !hasLoadedHuy) {
+      try {
+        setState(() {
+          isLoadingHuy = true;
+        });
+        huy = await apiService.getTrips('hủy');
+        print('Dữ liệu đã hủy: $huy');
+        hasLoadedHuy = true;
+      } catch (e) {
+        print('Lỗi khi tải chuyến đi đã hủy: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Lỗi khi tải chuyến đi: $e')),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            isLoadingHuy = false;
+          });
+        }
+      }
+    }
+  }
+
+  Future<void> _reloadAllData() async {
+    setState(() {
+      hasLoadedChoXacNhan = false; 
+      hasLoadedHuy = false; 
+      isLoadingChoXacNhan = true; 
+      isLoadingHuy = true;
+    });
+
     try {
-      choXacNhan = await apiService.getTrips('chờ xác nhận');
-      huy = await apiService.getTrips('huy');
-      setState(() {});
+      final [choXacNhanData, huyData] = await Future.wait([
+        apiService.getTrips('chờ xác nhận'),
+        apiService.getTrips('hủy'),
+      ]);
+      setState(() {
+        choXacNhan = choXacNhanData;
+        huy = huyData;
+        hasLoadedChoXacNhan = true;
+        hasLoadedHuy = true;
+      });
+      print('Dữ liệu chờ xác nhận sau reload: $choXacNhan');
+      print('Dữ liệu đã hủy sau reload: $huy');
     } catch (e) {
-      print('Error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi khi tải chuyến đi: $e')),
-      );
+      print('Lỗi khi reload dữ liệu: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lỗi khi tải lại dữ liệu: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoadingChoXacNhan = false;
+          isLoadingHuy = false;
+        });
+      }
+    }
+  }
+
+  // Hàm làm mới dữ liệu khi kéo xuống
+  Future<void> _refreshData(int tabIndex) async {
+    if (tabIndex == 0) {
+      setState(() {
+        hasLoadedChoXacNhan = false;
+        isLoadingChoXacNhan = true;
+      });
+      await _fetchDataForTab(0);
+    } else if (tabIndex == 1) {
+      setState(() {
+        hasLoadedHuy = false;
+        isLoadingHuy = true;
+      });
+      await _fetchDataForTab(1);
     }
   }
 
@@ -54,25 +152,35 @@ class _ChuyenDiScreenState extends State<ChuyenDiScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                choXacNhan.isEmpty
-                    ? const Center(
-                        child: Text('Không có chuyến đi chờ xác nhận'))
-                    : ListView.builder(
-                        itemCount: choXacNhan.length,
-                        itemBuilder: (context, index) => TripCardSapToi(
-                          trip: choXacNhan[index],
-                          onCancel: fetchTrips,
-                        ),
-                      ),
-                huy.isEmpty
-                    ? const Center(child: Text('Không có chuyến đi đã hủy'))
-                    : ListView.builder(
-                        itemCount: huy.length,
-                        itemBuilder: (context, index) => TripCardSapToi(
-                          trip: huy[index],
-                          isCancelled: true,
-                        ),
-                      ),
+                isLoadingChoXacNhan
+                    ? const Center(child: CircularProgressIndicator())
+                    : choXacNhan.isEmpty
+                        ? const Center(
+                            child: Text('Không có chuyến đi chờ xác nhận'))
+                        : RefreshIndicator(
+                            onRefresh: () => _refreshData(0),
+                            child: ListView.builder(
+                              itemCount: choXacNhan.length,
+                              itemBuilder: (context, index) => TripCardSapToi(
+                                trip: choXacNhan[index],
+                                onCancel: _reloadAllData, 
+                              ),
+                            ),
+                          ),
+                isLoadingHuy
+                    ? const Center(child: CircularProgressIndicator())
+                    : huy.isEmpty
+                        ? const Center(child: Text('Không có chuyến đi đã hủy'))
+                        : RefreshIndicator(
+                            onRefresh: () => _refreshData(1),
+                            child: ListView.builder(
+                              itemCount: huy.length,
+                              itemBuilder: (context, index) => TripCardSapToi(
+                                trip: huy[index],
+                                isCancelled: true,
+                              ),
+                            ),
+                          ),
               ],
             ),
           ),

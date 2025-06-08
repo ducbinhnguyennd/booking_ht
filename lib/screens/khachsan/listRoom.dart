@@ -3,17 +3,17 @@ import 'package:booking_hotel/widget/item_room.dart';
 import 'package:flutter/material.dart';
 
 class Listroom extends StatefulWidget {
-  const Listroom({super.key, required this.namehotel});
+  const Listroom({super.key, required this.namehotel, required this.khachsanId});
   final String namehotel;
+  final String khachsanId;
   @override
   State<Listroom> createState() => _ListroomState();
 }
 
 final List<Map<String, dynamic>> listroom = [
-  {"image": AssetsPathConst.hanoi, "room": "Phòng 1", "price": 1000000},
-  {"image": AssetsPathConst.hanoi, "room": "Phòng 2", "price": 2000000},
-  {"image": AssetsPathConst.hanoi, "room": "Phòng 3", "price": 3000000},
-  {"image": AssetsPathConst.hanoi, "room": "Phòng 4", "price": 4000000}
+  {"image": AssetsPathConst.giuongdon, "room": "Phòng đơn", "price": 500000},
+  {"image": AssetsPathConst.giuongdoi, "room": "Phòng đôi", "price": 800000},
+  {"image": AssetsPathConst.vip, "room": "Phòng vip", "price": 1000000},
 ];
 
 class _ListroomState extends State<Listroom> {
@@ -45,7 +45,7 @@ class _ListroomState extends State<Listroom> {
             ),
             const Padding(
               padding: EdgeInsets.only(bottom: 8.0, left: 8.0),
-              child: Text('Có 4 loại phòng',
+              child: Text('Có 3 loại phòng',
                   style: TextStyle(fontSize: 20, color: Color(0xFF000000))),
             ),
             Expanded(
@@ -53,7 +53,9 @@ class _ListroomState extends State<Listroom> {
                 child: Column(
                   children: listroom.map((room) {
                     return ItemRoom(
-                      nameHotel: room['room'],
+                      nameHotel: widget.namehotel,
+                      khachsanId: widget.khachsanId,
+                      nameRoom: room['room'],
                       imageHotel: room['image'],
                       priceHotel: (room['price'] as num).toDouble(),
                       onPressed: () {},

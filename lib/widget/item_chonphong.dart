@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 class ItemChonPhong extends StatefulWidget {
   final String nameHotel;
+  final String khachsanId;
   final List<String> imagesHotel;
   final double priceHotel;
 
@@ -17,6 +18,7 @@ class ItemChonPhong extends StatefulWidget {
     required this.nameHotel,
     required this.imagesHotel,
     required this.priceHotel,
+    required this.khachsanId
   });
 
   @override
@@ -252,6 +254,7 @@ class _ItemChonPhongState extends State<ItemChonPhong> {
             MaterialPageRoute(
               builder: (context) => Listroom(
                 namehotel: widget.nameHotel,
+                khachsanId: widget.khachsanId,
               ),
             ),
           );

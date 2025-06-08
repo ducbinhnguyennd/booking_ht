@@ -9,9 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiService {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: Platform.isAndroid
-    ? 'http://10.0.2.2:5000/api/'
-    : 'http://192.168.110.70:5000/api/',
+      baseUrl: 'https://be-booking-hotel.vercel.app/api/',
     ),
   );
 
@@ -126,6 +124,39 @@ class ApiService {
         'booking/bookings/$tripId/cancel',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> bookRoom({
+    required String khachSanId,
+    required String tenPhong,
+    required String ngayNhan,
+    required String ngayTra,
+  }) async {
+    try {
+      final token = await getToken();
+      if (token == null) {
+        throw Exception('No token found');
+      }
+
+      final response = await _dio.post(
+        'booking/book',
+        data: {
+          'khachSanId': khachSanId,
+          'tenPhong': tenPhong,
+          'ngayNhan': ngayNhan,
+          'ngayTra': ngayTra,
+        },
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return response.data;
+      } else {
+        throw Exception('Failed to book room: ${response.statusCode} - ${response.data['msg'] ?? response.data}');
+      }
     } on DioException catch (e) {
       throw _handleError(e);
     }

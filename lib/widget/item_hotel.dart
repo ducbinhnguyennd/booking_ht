@@ -9,12 +9,14 @@ class ItemHotel extends StatelessWidget {
   final List<String> imagesHotel;
   final double priceHotel;
   final VoidCallback? onPressed;
+  final String khachsanId;
 
   const ItemHotel({
     super.key,
     required this.nameHotel,
     required this.imagesHotel,
     required this.priceHotel,
+    required this.khachsanId,
     this.onPressed,
   });
 
@@ -104,6 +106,7 @@ class ItemHotel extends StatelessWidget {
                               nameHotel: nameHotel,
                               imagesHotel: imagesHotel,
                               priceHotel: priceHotel,
+                              khachsanId: khachsanId
                             ),
                           ),
                         );

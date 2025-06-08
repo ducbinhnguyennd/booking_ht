@@ -1,5 +1,6 @@
-import 'package:booking_hotel/apiservice/api_service.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:booking_hotel/apiservice/api_service.dart';
 import 'package:booking_hotel/models/trip_model.dart';
 
 class TripCardSapToi extends StatelessWidget {
@@ -23,9 +24,26 @@ class TripCardSapToi extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (trip.hotelImages.isNotEmpty)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.memory(
+                  base64Decode(trip.hotelImages[0].split(',').last),
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      height: 150,
+                      color: Colors.grey,
+                      child: const Center(child: Text('Ảnh không tải được')),
+                    );
+                  },
+                ),
+              ),
+            const SizedBox(height: 8),
             Text(trip.hotelName,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             Text('Phòng: ${trip.roomName}'),
             Text('Nhận: ${trip.ngayNhan.toLocal().toString().split(" ")[0]}'),
             Text('Trả: ${trip.ngayTra.toLocal().toString().split(" ")[0]}'),
@@ -34,9 +52,24 @@ class TripCardSapToi extends StatelessWidget {
               TextButton(
                 onPressed: () async {
                   try {
+                    // Hiển thị loading khi bắt đầu hủy
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) => const Center(child: CircularProgressIndicator()),
+                    );
+
                     await ApiService().cancelTrip(trip.id);
-                    if (onCancel != null) onCancel!();
+                    if (onCancel != null) onCancel!(); // Gọi lại fetchTrips
+
+                    // Đóng dialog và thông báo thành công
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Hủy đặt thành công!')),
+                    );
                   } catch (e) {
+                    // Đóng dialog nếu có lỗi
+                    Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Lỗi khi hủy: $e')),
                     );

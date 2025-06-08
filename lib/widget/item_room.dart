@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 class ItemRoom extends StatelessWidget {
   final String nameHotel;
+  final String nameRoom;
+  final String khachsanId;
   final String imageHotel;
   final double priceHotel;
   final VoidCallback? onPressed;
@@ -12,8 +14,10 @@ class ItemRoom extends StatelessWidget {
   const ItemRoom({
     super.key,
     required this.nameHotel,
+    required this.nameRoom,
     required this.imageHotel,
     required this.priceHotel,
+    required this.khachsanId,
     this.onPressed,
   });
 
@@ -42,7 +46,7 @@ class ItemRoom extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        nameHotel,
+                        nameRoom,
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w500,
@@ -64,7 +68,15 @@ class ItemRoom extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Room(),
+                                  builder: (context) => Room(
+                                    nameHotel: nameHotel,
+                                    priceHotel: priceHotel,
+                                    imageHotel: imageHotel,
+                                    khachsanId: khachsanId,
+                                    nameRoom: nameRoom
+
+
+                                  ),
                                 ),
                               );
                             },
